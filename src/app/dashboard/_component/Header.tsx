@@ -1,16 +1,35 @@
+"use client"
 import { UserButton } from '@clerk/nextjs'
 import Image from 'next/image'
-import React from 'react'
+import { usePathname } from 'next/navigation'
+import React, { useEffect } from 'react'
 
 function Header() {
+    const path = usePathname();
+    useEffect(() => {
+        console.log(path);
+    }, [])
   return (
-    <div className='flex p-4'>
-        <Image src={'/logo.svg'} width={100} height={100} alt='logo'/>
-        <ul>
-            <li>Dashboard</li>
-            <li>Questions</li>
-            <li>Upgrade</li>
-            <li>How it works</li>
+    <div className='flex p-4 items-center justify-between bg-secondary shadow-lg'>
+        <Image src={'/logo.svg'} width={60} height={40} alt='logo'/>
+        <ul className='hidden md:flex gap-6'>
+            <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer
+                ${path=='/dashboard' && 'text-primary font-bold' }
+                `}
+                >Dashboard</li>
+            <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer
+                ${path=='/dashboard/questions' && 'text-primary font-bold' }
+                `}
+                >Questions</li>
+            <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer
+                ${path=='/dashboard/upgrade' && 'text-primary font-bold' }
+                `}
+                >upgrade</li>
+            <li className={`hover:text-primary hover:font-bold transition-all cursor-pointer
+                ${path=='/dashboard/howitworks' && 'text-primary font-bold' }
+                `}
+                >How it works ?</li>
+
         </ul>
         <UserButton/>
     </div>
