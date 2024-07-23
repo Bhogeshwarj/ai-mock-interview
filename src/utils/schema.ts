@@ -1,4 +1,4 @@
-import { createECDH } from "crypto";
+
 import { serial, text, varchar } from "drizzle-orm/pg-core";
 import { pgTable } from "drizzle-orm/pg-core";
 
@@ -9,6 +9,7 @@ export const MockInterview = pgTable('mockInterview',{
     jobDescription:text('jobDescription').notNull(),
     jobExperience:varchar('jobExperience').notNull(),
     createdBy:varchar('createdBy').notNull(),
-    createdAt:serial('createdAt').notNull(),
+    createdAt:varchar('createdAt').notNull(),
     mockId:varchar('mockId').notNull()
+    
 })
