@@ -18,6 +18,7 @@ import { db } from '@/utils/db';
 import {v4 as uuidv4} from 'uuid';
 import { useUser } from '@clerk/nextjs';
 import moment from 'moment';
+import { useRouter } from 'next/navigation';
   
 function AddNewInterview() {
     const [openDailog, setOpenDailog] = React.useState(false);
@@ -27,7 +28,7 @@ function AddNewInterview() {
     const[loading,setLoading] = React.useState(false);
     const [jsonResponse, setJsonResponse] = React.useState([]);
     const {user} = useUser();
-
+    const router = useRouter();
 
     const onSubmit = async (e)=>{
       setLoading(true);
@@ -60,7 +61,11 @@ function AddNewInterview() {
           }).returning({mockId:MockInterview.mockId});
           
           console.log("Inserted Id", resp)
-         
+          if(resp)
+          {
+            setOpenDailog(false);
+            router.push('/dashboard/interview/' + resp[0]?.mockId);
+          }
 
         }
         else{
