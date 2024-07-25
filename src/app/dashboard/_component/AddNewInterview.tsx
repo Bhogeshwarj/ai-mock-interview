@@ -35,13 +35,13 @@ function AddNewInterview() {
         e.preventDefault();
         console.log(jobPosition,jobDescription,jobExperience);
 
-        const InputPrompt = "Job Poistion: "+ jobPosition  +", Job Description : "+ jobDescription + ", years of experience : " +jobExperience + " give me "+ process.env.NEXT_PUBLIC_INTERVIEW_QCOUNT+" interview question alang with answer in Json format . Give the question and answer field on JSON" 
+        const InputPrompt = "Job Poistion: "+ jobPosition  +", Job Description : "+ jobDescription + ", years of experience : " +jobExperience + " give me "+ process.env.NEXT_PUBLIC_INTERVIEW_QCOUNT+" interview question along with answer in Json format . Give the question and answer field in JSON no extra thing . Everything should be in JSON ." 
 
         const result = await chatSession.sendMessage(InputPrompt);
 
         const mockJsonResp = (result.response.text()).replace('```json','').replace('```','');
 
-        console.log(mockJsonResp);
+        console.log(JSON.parse(mockJsonResp));
 
         setJsonResponse(mockJsonResp);
       

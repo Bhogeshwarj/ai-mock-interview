@@ -6,6 +6,7 @@ import Webcam from "react-webcam";
 import { Lightbulb, WebcamIcon } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 interface InterviewProps {
   params: {
@@ -77,7 +78,9 @@ const Interview: React.FC<InterviewProps> = ({ params }) => {
       </div>
       </div>
       <div>
+        <Link href={params.interviewId+'/start'}>
         <Button>Start Interview</Button>
+        </Link>
       </div>
     </div>
   );
