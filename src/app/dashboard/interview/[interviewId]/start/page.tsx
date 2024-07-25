@@ -42,12 +42,14 @@ const [activeQuestionIndex,setActiveQuestionIndex] = useState<any>(0);
           const cleanedJsonMockResp = interview.jsonMockResp.replace(/[\n\r]/g, '').trim();
           const jsonMockResp = JSON.parse(cleanedJsonMockResp);
           setMockInterviewQuestion(jsonMockResp);
+
         } catch (parseError) {
           console.error('Error parsing JSON response:', parseError);
           console.error('Invalid JSON:', interview.jsonMockResp);
         }
 
         setInterviewData({
+          mockId: interview.mockId,
           jobPosition: interview.jobPosition,
           jobDescription: interview.jobDescription,
           jobExperience: interview.jobExperience || '', // Handle missing or undefined jobExperience
@@ -85,9 +87,13 @@ const [activeQuestionIndex,setActiveQuestionIndex] = useState<any>(0);
       <div>
         <QuestionSection mockInterviewQuestion = {mockInterviewQuestion}
         activeQuestionIndex={activeQuestionIndex}/>
+
       </div>
       {/* Video/audio recording  */}
-      <RecordAnswerSection/>
+      <RecordAnswerSection  mockInterviewQuestion = {mockInterviewQuestion}
+        activeQuestionIndex={activeQuestionIndex}
+        interviewData={interviewData}
+        />
       <div>
         
       </div>
