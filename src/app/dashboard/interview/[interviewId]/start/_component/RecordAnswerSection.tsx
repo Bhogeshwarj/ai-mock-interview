@@ -17,7 +17,9 @@ function RecordAnswerSection({mockInterviewQuestion=[],activeQuestionIndex,inter
     const { toast } = useToast()
     const [userAnswer,setUserAnswer] = React.useState('');
     const [loading,setLoading] = React.useState(false);
-    const {user} = useUser;
+    const {user} = useUser();
+
+
     const {
         error,
         interimResult,
@@ -25,6 +27,7 @@ function RecordAnswerSection({mockInterviewQuestion=[],activeQuestionIndex,inter
         results,
         startSpeechToText,
         stopSpeechToText,
+        setResults
       } = useSpeechToText({
         continuous: true,
         useLegacyResults: false
@@ -37,50 +40,62 @@ function RecordAnswerSection({mockInterviewQuestion=[],activeQuestionIndex,inter
     
       if (error) return <p>Web Speech API is not available in this browser 🤷‍</p>;
 
-      const saveUserAnswer = async () => {
+      useEffect(()=>{
+        if(!isRecording && userAnswer?.length>10){
+
+            updateUserAnswer();
+        }
+      //   if(userAnswer?.length<10){
+      //     setLoading(false);
+      //     toast({
+      //         description: "Error recording . Please Try again ...",
+      //       })
+      //       return;
+      // }
+      },[userAnswer])
+
+      const startStopRecording = async () => {
         if (isRecording) {
-            setLoading(true);
             stopSpeechToText();
-            if(userAnswer?.length<10){
-                setLoading(false);
-                toast({
-                    description: "Error recording . Please Try again ...",
-                  })
-                  return;
-            }
-            const feedbackPrompt = "Queston : "+mockInterviewQuestion[activeQuestionIndex] + 
-            "User Answer: " +userAnswer + ",Depends on question and user Answer for given interview question . Please give us rating for answer and feedback as area of improvement if any , in just 3 to 5 lines to imporve it in JSON format only with rating and feedback field . I want the whole response in JSON format only nothing extraa . "
-
-            const result = await chatSession.sendMessage(feedbackPrompt);
-
-
-            const mockJsonResp = (result.response.text()).replace('```json','').replace('```','');
-            const JsonFeedbackResp = JSON.parse(mockJsonResp);
-
-            const resp = await db.insert(UserAnswer)
-            .values({
-                mockIdRef:interviewData?.mockId,
-                question: mockInterviewQuestion[activeQuestionIndex]?.question,
-                correctAns: mockInterviewQuestion[activeQuestionIndex]?.answer,
-                userAns:userAnswer,
-                feedback:JsonFeedbackResp?.feedback,
-                rating:JsonFeedbackResp?.rating,
-                userEmail:user?.primaryEmailAddress.emailAddress,
-                createdAt:moment().format('DD-MM-yyyy')
-            })
-            
-            if(resp){
-                toast({
-                    description: "Answer Recorded Successfully",
-                  })
-            }
-            setUserAnswer('');
-            setLoading(false);
 
         } else {
             startSpeechToText();
         }
     };
+    const updateUserAnswer = async ()=>{
+      setLoading(true)
+      const feedbackPrompt = "Queston : "+mockInterviewQuestion[activeQuestionIndex] + 
+      "User Answer: " +userAnswer + ",Depends on question and user Answer for given interview question . Please give us rating for answer and feedback as area of improvement if any , in just 3 to 5 lines to imporve it in JSON format only with rating and feedback field . I want the whole response in JSON format only nothing extraa . "
+
+      const result = await chatSession.sendMessage(feedbackPrompt);
+
+
+      const mockJsonResp = (result.response.text()).replace('```json','').replace('```','');
+      const JsonFeedbackResp = JSON.parse(mockJsonResp);
+
+      const resp = await db.insert(UserAnswer)
+      .values({
+          mockIdRef:interviewData?.mockId,
+          question: mockInterviewQuestion[activeQuestionIndex]?.question,
+          correctAns: mockInterviewQuestion[activeQuestionIndex]?.answer,
+          userAns:userAnswer,
+          feedback:JsonFeedbackResp?.feedback,
+          rating:JsonFeedbackResp?.rating,
+          userEmail: user?.primaryEmailAddress?.emailAddress,
+          createdAt:moment().format('DD-MM-yyyy')
+      })
+      
+      if(resp){
+          toast({
+              description: "Answer Recorded Successfully",
+            })
+            setResults([]);
+      }
+      setResults([]);
+      setUserAnswer('');
+      setLoading(false);
+
+    }
     
   return (
     <div className='flex flex-col justify-center items-center my-20 bg-secondary round-lg p-5'>
@@ -107,7 +122,7 @@ zIndex:10,
 
             <Button variant="outline" className='my-10'
             disabled={loading} 
-            onClick={saveUserAnswer}>
+            onClick={startStopRecording}>
                 {isRecording?
             <h2 className='flex items-center justify-center gap-2 text-red-600'>
                 < Mic/> Recording...

@@ -25,7 +25,6 @@ const Interview: React.FC<InterviewProps> = ({ params }) => {
   const [webcamEnable, setWebcamEnable] = useState<boolean>(false);
 
   useEffect(() => {
-    console.log(params.interviewId);
     getInterviewDetails();
   }, [params.interviewId]);
 
@@ -33,7 +32,6 @@ const Interview: React.FC<InterviewProps> = ({ params }) => {
   const getInterviewDetails = async () => {
     const result = await db.select().from(MockInterview)
       .where(eq(MockInterview.mockId, params.interviewId));
-    console.log(result);
     setInterviewData(result[0] as InterviewData); // Type assertion
   };
 
