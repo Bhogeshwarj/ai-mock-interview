@@ -1,4 +1,4 @@
-import { Lightbulb, Loader2 } from 'lucide-react';
+import { Lightbulb, Loader2, Volume } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 
 interface Question {
@@ -39,6 +39,14 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({ mockInterviewQuestion
       /></p>;
   }
 
+  const textToSpeech = (text)=>{
+    if('speechSynthesis' in window){
+        const speech = new SpeechSynthesisUtterance(text);
+        window.speechSynthesis.speak(speech)
+    }else{
+        alert('sorry , Your browser doesnt support thihs')
+    }
+  }
   return (
     <div className="p-5 border rounded-lg">
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
@@ -52,14 +60,14 @@ const QuestionSection: React.FC<QuestionSectionProps> = ({ mockInterviewQuestion
         ))}
       </div>
       {questions.length > 0 && (
-        <h2 className="">{questions[activeQuestionIndex]?.question}</h2>
+        <h2 className="my-5 text-md md:text-lg">{questions[activeQuestionIndex]?.question}</h2>
       )}
+    {/* <Volume onClick={()=>textToSpeech(questions)} /> */}
     <div className='border rounded-sm p-5 bg-purple-100 mt-10'>
         <h2 className='flex flex-col gap-2 items-center text-purple-700'>
             <div className='mr-auto'>
 <span className='flex gap-2'><Lightbulb /><strong> Note :</strong></span>
             </div>
-            
             <div>
             <p>Click on Record Answer when you want to answer the question . At the end of interview we will give you feedback along with the correct answer for each question and your answer to compare it .</p>
             </div>

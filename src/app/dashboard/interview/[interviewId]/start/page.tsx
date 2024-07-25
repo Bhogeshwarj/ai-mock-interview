@@ -4,6 +4,7 @@ import { MockInterview } from '@/utils/schema';
 import { eq } from 'drizzle-orm';
 import React, { useEffect, useState } from 'react';
 import QuestionSection from './_component/QuestionSection';
+import RecordAnswerSection from './_component/RecordAnswerSection';
 
 interface InterviewProps {
   params: {
@@ -60,7 +61,7 @@ const [activeQuestionIndex,setActiveQuestionIndex] = useState<any>(0);
   };
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2'>
+    <div className='grid grid-cols-1 md:grid-cols-2 gap-10'>
       {/* <h1>Start Interview</h1>
       {interviewData && (
         <div>
@@ -80,9 +81,15 @@ const [activeQuestionIndex,setActiveQuestionIndex] = useState<any>(0);
           ))}
         </div>
       )} */}
+      {/* Questions  */}
       <div>
         <QuestionSection mockInterviewQuestion = {mockInterviewQuestion}
         activeQuestionIndex={activeQuestionIndex}/>
+      </div>
+      {/* Video/audio recording  */}
+      <RecordAnswerSection/>
+      <div>
+        
       </div>
     </div>
   );
