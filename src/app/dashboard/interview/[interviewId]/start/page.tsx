@@ -99,7 +99,8 @@ const [activeQuestionIndex,setActiveQuestionIndex] = useState<any>(0);
       {activeQuestionIndex >0 &&   
       <Button onClick={()=>setActiveQuestionIndex(activeQuestionIndex-1)} >Previous Question</Button>}
         <Button onClick={()=>setActiveQuestionIndex(activeQuestionIndex+1)}>Next Question</Button>
-        {activeQuestionIndex==mockInterviewQuestion?.length-1 && <Button>End Interview</Button>}
+        {/* {activeQuestionIndex==mockInterviewQuestion?.length-1 && 
+        <Button>End Interview</Button>} */}
         <Link href={'/dashboard/interview/' + interviewData?.mockId+"/feedback"}>
         <Button>End Interview</Button>
         </Link>
