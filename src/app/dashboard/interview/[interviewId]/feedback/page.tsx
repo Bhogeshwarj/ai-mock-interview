@@ -56,7 +56,7 @@ function Page({params}) {
                 <strong>Rating: {item.rating}</strong></h2>
                 <h2 className='p-2 border rounded-lg bg-red-100 text-sm text-red-700'><strong> Your Answer : </strong>{item.userAns}</h2>
                 <h2 className='p-2 border rounded-lg bg-green-100 text-sm text-green-700' ><strong> Correct Answer : </strong>{item.correctAns}</h2>
-                <h2 className='p-2 border rounded-lg bg-blue-100 text-sm text-blue-700' ><strong> Feedback : </strong>{item.correctAns}</h2>
+                <h2 className='p-2 border rounded-lg bg-blue-100 text-sm text-blue-700' ><strong> Feedback : </strong>{item.feedback}</h2>
             </div>
         </CollapsibleContent>
       </Collapsible>
@@ -64,7 +64,7 @@ function Page({params}) {
       ))}
 </>
   }
-      <Button onClick={()=>router.replace('/dashboard')}> Go Home</Button>
+      <Button className='mt-5' onClick={()=>router.replace('/dashboard')}> Go Home</Button>
     </div>
   )
 }
