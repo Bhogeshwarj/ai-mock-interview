@@ -24,7 +24,7 @@ const StartInterview: React.FC<InterviewProps> = ({ params }) => {
   const [mockInterviewQuestion, setMockInterviewQuestion] = useState<any>(null);
 const [activeQuestionIndex,setActiveQuestionIndex] = useState<any>(0);
   useEffect(() => {
-    console.log(params.interviewId);
+    // console.log(params.interviewId);
     getInterviewDetails();
   }, [params.interviewId]);
 
@@ -36,7 +36,7 @@ const [activeQuestionIndex,setActiveQuestionIndex] = useState<any>(0);
 
       if (result.length > 0) {
         const interview = result[0];
-        console.log('Interview result:', interview);
+        // console.log('Interview result:', interview);
 
         // Sanitize and parse the JSON response
         try {
